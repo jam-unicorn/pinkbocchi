@@ -13,17 +13,17 @@ qt_add_executable(mediaplayer
 )
 
 set(resource_files
-    "main.qml"
-    "PlaybackControl.qml"
-    "MetadataInfo.qml"
-    "AudioControl.qml"
-    "PlaybackSeekControl.qml"
-    "PlayerMenuBar.qml"
-    "PlayList.qml"
-    "TracksInfo.qml"
-    "Cover.jpg"
-    "Mute_Icon.svg"
-    "Speaker_Icon.svg"
+    "qml/main.qml"
+    "qml/PlaybackControl.qml"
+    "qml/MetadataInfo.qml"
+    "qml/AudioControl.qml"
+    "qml/PlaybackSeekControl.qml"
+    "qml/PlayerMenuBar.qml"
+    "qml/PlayList.qml"
+    "qml/TracksInfo.qml"
+    "resources/Cover.jpg"
+    "resources/Mute_Icon.svg"
+    "resources/Speaker_Icon.svg"
 )
 
 qt_add_resources(mediaplayer "mediaplayer"

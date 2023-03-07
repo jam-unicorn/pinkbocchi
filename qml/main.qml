@@ -22,7 +22,7 @@ Window {
 
     Image {
         id: cover
-        source: "qrc:///Cover.jpg"
+        source: "qrc:///resources/Cover.jpg"
         anchors.top: parent.top
         anchors.topMargin: root.height/4
         anchors.right: playList.visible ? playList.left : parent.right

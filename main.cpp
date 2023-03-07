@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     parser.process(app);
 
     QQmlApplicationEngine engine;
-    const QUrl url(QStringLiteral("qrc:/main.qml"));
+    const QUrl url(QStringLiteral("qrc:/qml/main.qml"));
 
     if (!parser.positionalArguments().isEmpty()) {
         QUrl source = QUrl::fromUserInput(parser.positionalArguments().at(0), QDir::currentPath());
