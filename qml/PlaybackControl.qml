@@ -15,7 +15,7 @@ Item {
 
     opacity: 1
 
-    Behavior on opacity { NumberAnimation { duration: 300 }}
+    Behavior on opacity {NumberAnimation { duration: 300 }}
 
     function updateOpacity() {
         //hover is not usable in mobile platforms
@@ -92,16 +92,7 @@ Item {
                         text: "<<";
                         onClicked: {
                             mediaPlayer.stop()
-                            if(playList.songindex===0){
-                                playList.setCurrentSong(playList.count - 1)
-                                mediaPlayer.source = playList.getCurrentSong()
-                                mediaPlayer.play()
-                            }
-                            else{
-                                playList.setCurrentSong(playList.songindex - 1)
-                                mediaPlayer.source = playList.getCurrentSong()
-                                mediaPlayer.play()
-                            }
+                            playList.previousSong()
                         }
                     }
 
@@ -124,17 +115,7 @@ Item {
                         radius: 50.0
                         text: ">>";
                         onClicked: {
-                            mediaPlayer.stop()
-                            if(playList.songindex===playList.count -1){
-                                playList.setCurrentSong(0)
-                                mediaPlayer.source = playList.getCurrentSong()
-                                mediaPlayer.play()
-                            }
-                            else{
-                                playList.setCurrentSong(playList.songindex + 1)
-                                mediaPlayer.source = playList.getCurrentSong()
-                                mediaPlayer.play()
-                            }
+                            playList.nextSong()
                         }
                     }
 

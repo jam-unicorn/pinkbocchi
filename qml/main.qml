@@ -49,6 +49,12 @@ Window {
             volume: playbackControl.volume
         }
 
+        onMediaStatusChanged: {
+            if(mediaStatus == MediaPlayer.EndOfMedia){
+                playList.nextSong()
+            }
+        }
+
         onErrorOccurred: { mediaErrorText.text = mediaPlayer.errorString; mediaError.open() }
         onMetaDataChanged: { updateMetadata() }
         onTracksChanged: {
@@ -59,19 +65,6 @@ Window {
             updateMetadata()
         }
         onActiveTracksChanged: { updateMetadata() }
-    }
-
-    PlayerMenuBar {
-        id: menuBar
-
-        anchors.left: parent.left
-        anchors.right: parent.right
-
-        mediaPlayer: mediaPlayer
-        metadataInfo: metadataInfo
-        audioTracksInfo: audioTracksInfo
-
-        onClosePlayer: root.close()
     }
 
     TracksInfo {
@@ -106,17 +99,15 @@ Window {
         visible: false
     }
 
-
     PlayList {
         id: playList
 
         anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.bottom: playbackControl.opacity ? playbackControl.bottom : parent.bottom
+        anchors.top: menuBar.bottom
+        anchors.bottom: playbackControl.opacity ? playbackControl.top : parent.bottom
 
         visible: false
     }
-
 
     PlaybackControl {
         id: playbackControl
@@ -126,5 +117,18 @@ Window {
         anchors.right: parent.right
 
         mediaPlayer: mediaPlayer
+    }
+
+    PlayerMenuBar {
+        id: menuBar
+
+        anchors.left: parent.left
+        anchors.right: parent.right
+
+        mediaPlayer: mediaPlayer
+        metadataInfo: metadataInfo
+        audioTracksInfo: audioTracksInfo
+
+        onClosePlayer: root.close()
     }
 }

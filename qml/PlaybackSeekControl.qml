@@ -33,9 +33,11 @@ Item {
             id: mediaSlider
             Layout.fillWidth: true
             enabled: mediaPlayer.seekable
-            to: 1.0
-            value: mediaPlayer.position / mediaPlayer.duration
-            onMoved: mediaPlayer.setPosition(value * mediaPlayer.duration)
+            to: mediaPlayer.duration
+            value: mediaPlayer.position
+            onMoved: {
+                mediaPlayer.setPosition(value)
+            }
             onPressedChanged: {
                 mediaPlayer.pause()
                 mediaPlayer.play()
@@ -50,7 +52,7 @@ Item {
             text: {
                 var len_m = Math.floor(mediaPlayer.duration / 60000)
                 var len_ms = (mediaPlayer.duration / 1000 - len_m * 60).toFixed(1)
-                return `${len_m}:${len_ms}`
+                return `${len_m}:${len_ms.padStart(4, 0)}`
             }
         }
     }
