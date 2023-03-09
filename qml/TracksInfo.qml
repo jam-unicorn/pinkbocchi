@@ -66,7 +66,7 @@ Item {
         Text {
             id: metadataNoList
             visible: elements.count === 0
-            text: qsTr("No tracks present")
+            text: "No tracks present"
         }
     }
 }

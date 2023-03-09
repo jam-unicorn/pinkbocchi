@@ -9,7 +9,6 @@ Item {
 
     required property MediaPlayer mediaPlayer
     required property MetadataInfo metadataInfo
-    required property TracksInfo audioTracksInfo
 
     height: menuBar.height
 
@@ -17,8 +16,7 @@ Item {
 
     function closeOverlays(){
         metadataInfo.visible = false;
-        audioTracksInfo.visible = false;
-        subtitleTracksInfo.visible = false;
+        playList.visible = false;
     }
 
     function showOverlay(overlay){
@@ -47,7 +45,7 @@ Item {
         id: folderDialog
         title: "Please choose a Folder"
         onAccepted: {
-            mediaPlayer.folderUrl = folderDialog.selectedFolder
+            playList.songFolder = folderDialog.selectedFolder
         }
     }
 
@@ -57,44 +55,37 @@ Item {
         anchors.right: parent.right
 
         Menu {
-            title: qsTr("&File")
+            title: "File"
             Action {
-                text: qsTr("&Open")
+                text: "Open"
                 onTriggered: fileDialog.open()
             }
 
             Action {
-                text: qsTr("&OpenFolder")
+                text: "OpenFolder"
                 onTriggered: folderDialog.open()
             }
 
             Action {
-                text: qsTr("&Exit");
+                text: "Exit"
                 onTriggered: closePlayer()
             }
         }
 
         Menu {
-            title: qsTr("&View")
+            title: "View"
             Action {
-                text: qsTr("Metadata")
-                onTriggered: showOverlay(metadataInfo)
+                text: "Metadata"
+                onTriggered: {
+                    if(!metadataInfo.visible)
+                        showOverlay(metadataInfo)
+                    else
+                        metadataInfo.visible = false
+                }
             }
             Action {
-                text: qsTr("PlayList")
+                text: "PlayList"
                 onTriggered: showOverlay(playList)
-            }
-        }
-
-        Menu {
-            title: qsTr("&Tracks")
-            Action {
-                text: qsTr("Audio")
-                onTriggered: showOverlay(audioTracksInfo)
-            }
-            Action {
-                text: qsTr("Subtitles")
-                onTriggered: showOverlay(subtitleTracksInfo)
             }
         }
     }

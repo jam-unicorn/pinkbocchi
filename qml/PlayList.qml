@@ -9,12 +9,9 @@ Item {
 
     implicitWidth: 200
 
+    property url songFolder: " "
     property int songindex: -1
     property int count: 0
-
-    function clear() {
-        songListModel.clear()
-    }
 
     function getCurrentSong(){
         return songListModel.get(songindex).value
@@ -60,19 +57,13 @@ Item {
         mediaPlayer.play()
     }
 
-    function autoNext(){
-        console.log(mediaPlayer.mediaStatus)
-        if(mediaPlayer.mediaStatus == MediaPlayer.EndOfMedia){
-            playList.nextSong()
-        }
-    }
-
     Frame {
         anchors.fill: parent
         padding: 15
 
         background: Rectangle {
-            color: "lightgray"
+            color: "lightgrey"
+            opacity: 0.5
         }
 
         ListView {
@@ -87,12 +78,17 @@ Item {
             Component {
                 id: fileDelegate
                 Button {
-                    anchors.left: parent.left
                     height: 28
                     flat: true
                     text: model.name
                     background: Rectangle {
-                        color: "lightgray"
+                        color: "steelblue"
+                        opacity: 0
+                    }
+
+                    ToolTip{
+                        visible: pressed
+                        text: model.name
                     }
 
                     onDoubleClicked: {
@@ -111,7 +107,38 @@ Item {
         Text {
             id: metadataNoList
             visible: songListModel.count === 0
-            text: qsTr("当前播放列表为空")
+            text: "no playlist present"
         }
+    }
+
+    ListView {
+        id: folderView
+        visible: false
+        anchors.fill: parent
+
+        FolderListModel{
+            id: folderListModel
+            folder:songFolder
+            showDirs: false
+            nameFilters: [ "*.flac", "*.mp3" ]
+        }
+
+        Component {
+            id: folderDelegate
+
+            Text{
+                text:{
+                    fileName
+                }
+                onTextChanged: {
+                    var str = fileName.toString()
+                    str = str.substring(0, str.lastIndexOf("."))
+                    addSong(str, fileUrl.toString())
+                }
+            }
+        }
+
+        model: folderListModel
+        delegate: folderDelegate
     }
 }

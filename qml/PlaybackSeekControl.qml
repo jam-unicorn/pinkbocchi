@@ -1,6 +1,3 @@
-// Copyright (C) 2021 The Qt Company Ltd.
-// SPDX-License-Identifier: LicenseRef-Qt-Commercial OR BSD-3-Clause
-
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
@@ -35,6 +32,37 @@ Item {
             enabled: mediaPlayer.seekable
             to: mediaPlayer.duration
             value: mediaPlayer.position
+            stepSize: 0.01
+            snapMode:Slider.SnapOnRelease
+
+            background: Rectangle {
+                x: mediaSlider.leftPadding
+                y: mediaSlider.topPadding + mediaSlider.availableHeight / 2 - height / 2
+                implicitWidth: 200
+                implicitHeight: 4
+                width: mediaSlider.availableWidth
+                height: implicitHeight
+                radius: 2
+                color: "#bdbebf"
+
+                Rectangle {
+                    width: mediaSlider.visualPosition * parent.width
+                    height: parent.height
+                    color: "#21be2b"
+                    radius: 2
+                }
+            }
+
+            handle: Rectangle {
+                x: mediaSlider.leftPadding + mediaSlider.visualPosition * (mediaSlider.availableWidth - width)
+                y: mediaSlider.topPadding + mediaSlider.availableHeight / 2 - height / 2
+                implicitWidth: 20
+                implicitHeight: 20
+                radius: 13
+                color: mediaSlider.pressed ? "#f0f0f0" : "#f6f6f6"
+                border.color: "#bdbebf"
+            }
+
             onMoved: {
                 mediaPlayer.setPosition(value)
             }

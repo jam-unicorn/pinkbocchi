@@ -4,13 +4,15 @@ import QtQuick.Controls
 import QtQuick.Layouts
 import QtMultimedia
 
-Window {
+ApplicationWindow {
     id: root
     width: 640
     height: 480
     visible: true
-    title: qsTr("Music Player")
+    title: "Music Player"
     property alias source: mediaPlayer.source
+
+    color: "white"
 
     Popup {
         id: mediaError
@@ -22,11 +24,23 @@ Window {
 
     Image {
         id: cover
-        source: "qrc:///resources/Cover.jpg"
+        source: "qrc:/resources/Cover.jpg"
         anchors.top: parent.top
         anchors.topMargin: root.height/4
-        anchors.right: playList.visible ? playList.left : parent.right
-        anchors.rightMargin: playList.visible ? (root.width - playList.width)/2 - root.height/4 : root.width/2 - root.height/4
+        anchors.right: {
+            if(metadataInfo.visible||playList.visible){
+                return playList.left
+            }
+            else
+                return parent.right
+        }
+        anchors.rightMargin: {
+            if(metadataInfo.visible||playList.visible){
+                return (root.width - metadataInfo.width)/2 - root.height/4
+            }
+            else
+                return root.width/2 - root.height/4
+        }
         height: root.height/2
         fillMode: Image.PreserveAspectFit
         asynchronous : true
@@ -35,12 +49,9 @@ Window {
     MediaPlayer {
         id: mediaPlayer
 
-        property url folderUrl
-
         function updateMetadata() {
             metadataInfo.clear();
             metadataInfo.read(mediaPlayer.metaData);
-            metadataInfo.read(mediaPlayer.audioTracks[mediaPlayer.activeAudioTrack]);
         }
 
         audioOutput: AudioOutput {
@@ -57,36 +68,6 @@ Window {
 
         onErrorOccurred: { mediaErrorText.text = mediaPlayer.errorString; mediaError.open() }
         onMetaDataChanged: { updateMetadata() }
-        onTracksChanged: {
-            audioTracksInfo.read(mediaPlayer.audioTracks);
-            audioTracksInfo.selectedTrack = mediaPlayer.activeAudioTrack;
-            subtitleTracksInfo.read(mediaPlayer.subtitleTracks);
-            subtitleTracksInfo.selectedTrack = mediaPlayer.activeSubtitleTrack;
-            updateMetadata()
-        }
-        onActiveTracksChanged: { updateMetadata() }
-    }
-
-    TracksInfo {
-        id: audioTracksInfo
-
-        anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.bottom: playbackControl.opacity ? playbackControl.bottom : parent.bottom
-
-        visible: false
-        onSelectedTrackChanged:  mediaPlayer.activeAudioTrack = audioTracksInfo.selectedTrack
-    }
-
-    TracksInfo {
-        id: subtitleTracksInfo
-
-        anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.bottom: playbackControl.opacity ? playbackControl.bottom : parent.bottom
-
-        visible: false
-        onSelectedTrackChanged: mediaPlayer.activeSubtitleTrack = subtitleTracksInfo.selectedTrack
     }
 
     MetadataInfo {
@@ -127,7 +108,6 @@ Window {
 
         mediaPlayer: mediaPlayer
         metadataInfo: metadataInfo
-        audioTracksInfo: audioTracksInfo
 
         onClosePlayer: root.close()
     }

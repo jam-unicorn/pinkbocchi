@@ -41,9 +41,13 @@ Item {
             id: metadataList
             visible: elements.count > 0
             anchors.fill: parent
+            anchors.top: parent.top
+            anchors.topMargin: 50
             model: elements
+
             delegate: RowLayout {
                 width: metadataList.width
+
                 Text {
                     Layout.preferredWidth: 90
                     text: model.name + ":"
@@ -60,7 +64,7 @@ Item {
         Text {
             id: metadataNoList
             visible: elements.count === 0
-            text: qsTr("No metadata present")
+            text: "No metadata present"
         }
     }
 }

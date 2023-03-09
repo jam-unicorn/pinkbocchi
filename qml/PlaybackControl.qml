@@ -18,14 +18,13 @@ Item {
     Behavior on opacity {NumberAnimation { duration: 300 }}
 
     function updateOpacity() {
-        //hover is not usable in mobile platforms
         if (Qt.platform.os === "android" || Qt.platform.os === "ios")
             return;
 
         if (playbackControlHoover.hovered || mediaPlayerState != MediaPlayer.PlayingState || !mediaPlayer.hasVideo)
             root.opacity = 1;
         else
-            root.opacity = 1; // 0; TODO: enable opacity change when HoverHandle is fixed
+            root.opacity = 1;
     }
 
     function isChange(){
@@ -53,7 +52,7 @@ Item {
         anchors.bottom: parent.bottom
 
         background: Rectangle {
-            color: "white"
+            color: "lightgrey"
         }
 
         ColumnLayout {
@@ -69,7 +68,6 @@ Item {
 
             RowLayout {
                 id: playerButtons
-
                 Layout.fillWidth: true
 
                 Item {
@@ -79,7 +77,7 @@ Item {
                 Text {
                     id: songName
                     Layout.alignment:Qt.AlignLeft
-                    text: (playList.songindex === -1) ?  "" : qsTr(playList.getCurrentSongName())
+                    text: (playList.songindex === -1) ?  "" : playList.getCurrentSongName()
                 }
 
                 RowLayout {
@@ -87,9 +85,21 @@ Item {
                     id: controlButtons
 
                     RoundButton {
+                        id: loopButton
+                        radius: 50.0
+                        icon.source: (mediaPlayer.loops !== 1) ? "qrc:/resources/Loop.svg" : "qrc:/resources/Order.svg"
+                        onClicked: {
+                            if(mediaPlayer.loops === 1)
+                                mediaPlayer.loops = 100
+                            else
+                                mediaPlayer.loops = 1
+                        }
+                    }
+
+                    RoundButton {
                         id: previousButton
                         radius: 50.0
-                        text: "<<";
+                        icon.source: "qrc:/resources/Previous.svg"
                         onClicked: {
                             mediaPlayer.stop()
                             playList.previousSong()
@@ -99,21 +109,21 @@ Item {
                     RoundButton {
                         id: pauseButton
                         radius: 50.0
-                        text: "\u2016";
+                        icon.source: "qrc:/resources/Pause.svg"
                         onClicked: mediaPlayer.pause()
                     }
 
                     RoundButton {
                         id: playButton
                         radius: 50.0
-                        text: "\u25B6";
+                        icon.source: "qrc:/resources/Play.svg"
                         onClicked: mediaPlayer.play()
                     }
 
                     RoundButton {
                         id: nextButton
                         radius: 50.0
-                        text: ">>";
+                        icon.source: "qrc:/resources/Next.svg"
                         onClicked: {
                             playList.nextSong()
                         }
@@ -122,7 +132,7 @@ Item {
                     RoundButton {
                         id: stopButton
                         radius: 50.0
-                        text: "\u25A0";
+                        icon.source: "qrc:/resources/Stop.svg"
                         onClicked: {mediaPlayer.stop()}
                     }
                 }
@@ -142,7 +152,7 @@ Item {
                 RoundButton {
                     id: displaySongList
                     radius: 50.0
-                    text: "\u2261";
+                    icon.source: "qrc:/resources/PlayList.svg"
                     onClicked:isChange()
                 }
             }

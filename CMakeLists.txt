@@ -20,15 +20,21 @@ set(resource_files
     "qml/PlaybackSeekControl.qml"
     "qml/PlayerMenuBar.qml"
     "qml/PlayList.qml"
-    "qml/TracksInfo.qml"
     "resources/Cover.jpg"
     "resources/Mute_Icon.svg"
     "resources/Speaker_Icon.svg"
+    "resources/Loop.svg"
+    "resources/Order.svg"
+    "resources/Play.svg"
+    "resources/Pause.svg"
+    "resources/Next.svg"
+    "resources/Previous.svg"
+    "resources/Stop.svg"
+    "resources/PlayList.svg"
 )
 
 qt_add_resources(mediaplayer "mediaplayer"
-    PREFIX
-        "/"
+    PREFIX "/"
     FILES
         ${resource_files}
 )
